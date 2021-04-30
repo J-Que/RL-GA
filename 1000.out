@@ -1,0 +1,18 @@
+Reading data file... 
+Manual optimal value entered: 672
+Done.
+Taking population size 20*number of nodes
+Solution validator initialized
+Reinforcement agent initialized
+---------
+Problem: B-n31-k5 , Best known: 672
+Time elapsed: 12.8036 secs Time per loop: 0.6402 secs
+---------
+Stopped at generation 20, Best cost: 775, from Generation: 1
+---------
+Best solution: [  1.   0.   0.  12.  15.  14.  10.  27.  20.   2.   0.   5.   4.  17.
+   3.  29.  25.  16.  21.   0.  18.  13.  19.  11.  24.   1.   6.   0.
+   8.   9.  23.   7.  26.  28.   0.  30.  22.   0.   0.   0.   0.   0.
+   0.   0.   0.   0.   0.   0.   0.   0.   0.   0.   0.   0.   0.   0.
+   0.   0.   0.   0.   0.   0.   0. 775.]
+---------
