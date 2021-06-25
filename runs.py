@@ -1,25 +1,21 @@
+#arguements: runs.py problem_starting_index, problem_ending_index, run_starting_index, run_ending_index
 import os
 import sys
 import pandas as pd
-import concurrent.futures
-
-def rlga(parameters):
-    os.system('python gpu.py ' + parameters[0] + ' 20000 ' + parameters[1] + ' ' + str(index))
-    return parameters[0]
 
 def main():
     df = pd.read_csv('runs.csv')
-    params = [[df['Problem'][i], df['Best Known'][i]] for i in range(sys.argv[1], sys.argv[2])]
+    params = [[df['Problem'][i], df['Best Known'][i]] for i in range(int(sys.argv[1]), int(sys.argv[2]))]
+    
+    count = 1
+    total = len(range(int(sys.argv[1]), int(sys.argv[2]))) * len(range(int(sys.argv[3]), int(sys.argv[4])))
 
-    for i in range(sys.argv[3], sys.argv[4]):
-        index = i
-
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            results = [executor.submit(rlga, param) for param in params]
-            
-            for run in concurrent.futures.as_completed(results):
-                print('*******************************************************')
-                print(run.result(), '     ', index, 'FINISHED')
+    for i in range(int(sys.argv[3]), int(sys.argv[4])):
+        for j in params:
+            os.system('python gpu.py ' + str(j[0]) + ' 2 ' + str(j[1]) + ' ' + str(i))
+            print('*******************************************************')
+            print('RUN:', str(count), 'of', str(total))
+            count += 1
 
 if __name__ == '__main__':
     main()

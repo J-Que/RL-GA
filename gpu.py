@@ -721,9 +721,10 @@ try:
     cudaDrv = driver.Driver()
     print(cudaDrv.get_device_count())
     vrp_capacity, data, opt = readInput()
-    n = int(sys.argv[4])
-    crossover_prob = int(sys.argv[5])
-    mutation_prob = int(sys.argv[6])
+    n = 20
+    #n = int(sys.argv[4])
+    #crossover_prob = int(sys.argv[5])
+    #mutation_prob = int(sys.argv[6])
     popsize = -(-(n*(data.shape[0] - 1))//1000)*1000
 
     #####################################################################################################
@@ -850,14 +851,14 @@ try:
     ####################################################################################################################
     #---------------------- Solution Validator -------------------------------------------------------------------------
     # create a vrp solution validator, read the problem file in, and create a cost table on the cpu
-    referee = validateSolution.VRP(sys.argv[1])
-    referee.read()
-    referee.costTable()
+    #referee = validateSolution.VRP(sys.argv[1])
+    #referee.read()
+    #referee.costTable()
 
-    print('Solution validator initilized')
-    f = open('log.out', 'a')
-    print('Solution validator initialized', file=f)
-    f.close()
+    #print('Solution validator initilized')
+    #f = open('log.out', 'a')
+    #print('Solution validator initialized', file=f)
+    #f.close()
 
     #------------------------RL agent ---------------------------------------------------------------------------------
     # parameters for the rl agent
@@ -879,6 +880,14 @@ try:
     print('Reinforcement agent initialized', file=f)
     f.close()
 
+    #----------------------- SARSA -------------------------------------------------------------------------------------
+    # an action is choosen before the the start of the iterations
+    crossover_prob, mutation_prob = agent.initAction()
+    
+    # adjust the stats and actions 
+    agent.prevAction = agent.action
+    agent.prevState = agent.currState
+
     #-------------------------------------------------------------------------------------------------------------------
     ####################################################################################################################
 
@@ -887,16 +896,17 @@ try:
             break
 
         ############################################################################################################################
-        #-------------- Agent Decides ----------------------------------------------------------------------------------------------
+        #-------------- Q-Learning -------------------------------------------------------------------------------------------------
+        #-------------- Agent decides action ---------------------------------------------------------------------------------------
         
         # conduct the first action with the given initial parameters
-        if count == 0:
-            crossover_prob, mutation_prob = agent.initAction()
+        #if count == 0:
+        #    crossover_prob, mutation_prob = agent.initAction()
         
         # otherwise, every 4 generations decide on an action (crossover and mutation rates)
-        elif count % 4 == 0:
-            crossover_prob, mutation_prob = agent.decide(count)
-
+        #elif count % 4 == 0:
+        #    crossover_prob, mutation_prob = agent.decide(count)
+        
         #---------------------------------------------------------------------------------------------------------------------------
         ############################################################################################################################
 
@@ -1113,9 +1123,9 @@ try:
         #########################################################################################################################################
         #-------------------- Validation---------------------------------------------------------------------------------------------------------
         # save the results of this generation to help validate
-        log = open('results/validation/validate_' + sys.argv[1] + '_' + str(len(os.listdir('results/validation/')) - 1) + '.out', 'a')
-        print('After %d generations, Best: %d, '%(count, minimum_cost), 'Worst: %d'%worst_cost, 'delta: %d'%delta, 'Avg: %.2f'%average, file=log)
-        log.close()
+        #log = open('results/validation/validate_' + sys.argv[1] + '_' + str(len(os.listdir('results/validation/')) - 1) + '.out', 'a')
+        #print('After %d generations, Best: %d, '%(count, minimum_cost), 'Worst: %d'%worst_cost, 'delta: %d'%delta, 'Avg: %.2f'%average, file=log)
+        #log.close()
 
         # validate the current generations best solution
         #referee.validate(pop_d, count)
@@ -1124,11 +1134,17 @@ try:
         # the agent observes the enviroment and updates itself every 4 generations
         if count % 4 == 0:
             agent.observe(pop_d)
-            agent.update()
+            
+            #---------- SARSA ----------
+            agent.currState = agent.nextState
+            crossover_prob, mutation_prob = agent.decide()
+            agent.updateSARSA()
+            
+            #-------- Q Learning -------
+            #agent.updateQlearning()
 
         #--------------------- Log Results ------------------------------------------------------------------------------------------------------
         # the results of this generation are saves
-        
         results.update({count - 1 : int(minimum_cost)})
 
         #----------------------------------------------------------------------------------------------------------------------------------------
@@ -1161,11 +1177,13 @@ try:
     #-------------- Final Results Logged -----------------------------------------------------------------------------------------------
     # log the solution
     results = {'fitnesses':results,  'best cost':best_sol[-1].tolist(), 'best solution':best_sol.tolist()}
-    with open('results/cost/' + sys.argv[1] + '_cost_' + str(len(os.listdir('results/agent/')) - 1) + '.json', 'w') as f:
+    with open('results/SARSA/cost/' + sys.argv[1] + '_cost_' + sys.argv[4]+ '.json', 'w') as f:    
+    #with open('results/SARSA/cost/' + sys.argv[1] + '_cost_' + str(len(os.listdir('results/agent/')) - 1) + '.json', 'w') as f:
         json.dump(results, f, indent=4)
 
     # create copy of output file move the copy to the output file
-    shutil.copyfile('log.out', 'results/output/log_' + sys.argv[1] + '_' + str(len(os.listdir('results/output/'))) + '.out')
+    shutil.copyfile('log.out', 'results/SARSA/output/log_' + sys.argv[1] + '_' + sys.argv[4] + '.out')
+    #shutil.copyfile('log.out', 'results/SARSA/output/log_' + sys.argv[1] + '_' + str(len(os.listdir('results/output/'))) + '.out')
     
     #-----------------------------------------------------------------------------------------------------------------------------------
     ####################################################################################################################################
