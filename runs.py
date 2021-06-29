@@ -5,7 +5,7 @@ import pandas as pd
 
 def main():
     df = pd.read_csv('runs.csv')
-    params = [[df['Problem'][i], df['Best Known'][i]] for i in range(int(sys.argv[1]), int(sys.argv[2]))]
+    params = [[df['Problem'][i], int(df['Best Known'][i])] for i in range(int(sys.argv[1]), int(sys.argv[2]))]
     
     count = 1
     total = len(range(int(sys.argv[1]), int(sys.argv[2]))) * len(range(int(sys.argv[3]), int(sys.argv[4])))
