@@ -1152,7 +1152,7 @@ try:
 
     current_time = timer()
     total_time = float('{0:.4f}'.format((current_time - old_time)))
-    time_per_loop = float('{0:.4f}'.format((current_time - old_time)/(count-1)))
+    time_per_loop = float('{0:.4f}'.format((current_time - old_time)/max(count-1, 1)))
 
     best_sol = cp.subtract(best_sol, cp.ones_like(best_sol))
     best_sol[0] = best_sol[0] + 1
@@ -1210,7 +1210,7 @@ try:
 except KeyboardInterrupt:
     current_time = timer()
     total_time = float('{0:.4f}'.format((current_time - old_time)))
-    time_per_loop = float('{0:.4f}'.format((current_time - old_time)/(count-1)))
+    time_per_loop = float('{0:.4f}'.format((current_time - old_time)/max(count-1)))
     best_sol = cp.subtract(best_sol, cp.ones_like(best_sol))
     best_sol[0] = best_sol[0] + 1
     best_sol[-1] = best_sol[-1] + 1    
