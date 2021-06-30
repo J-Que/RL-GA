@@ -69,7 +69,7 @@ class RLagent():
         self.action = self.actionSpace.index((crossover, mutation))
 
         # initialie the json file
-        path = '../results/SARSA/agent/'
+        path = 'results/SARSA/agent/'
         self.json = path + problem + '_agent_' + str(len(os.listdir(path))) + '.json'
         with open(self.json, 'w') as f:
             json.dump({}, f)
