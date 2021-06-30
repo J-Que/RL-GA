@@ -1137,7 +1137,7 @@ try:
             
             #---------- SARSA ----------
             agent.currState = agent.nextState
-            crossover_prob, mutation_prob = agent.decide()
+            crossover_prob, mutation_prob = agent.decide(count)
             agent.updateSARSA()
             
             #-------- Q Learning -------
