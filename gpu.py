@@ -791,9 +791,9 @@ try:
     blocks            = (blocks_x, blocks_y)
     threads_per_block = (tpb_x, tpb_y)   
 
-    val = val.VRP(sys.argv[1])
-    val.read()
-    val.costTable()
+    #val = val.VRP(sys.argv[1])
+    #val.read()
+    #val.costTable()
     # --------------Calculate the cost table----------------------------------------------
     calc_cost_gpu[blocks, threads_per_block](data_d, popsize, vrp_capacity, cost_table_d)
     # --------------Initialize population----------------------------------------------
@@ -1094,7 +1094,7 @@ try:
         elif (count+1)%1 == 0:
             print('After %d generations, Best: %d,'%(count+1, minimum_cost), 'Worst: %d'%worst_cost, \
                 'delta: %d'%delta, 'Avg: %.2f'%average)
-            val.validate(pop_d,1)
+            #val.validate(pop_d,1)
             # text_out = open('log.out', 'a')
             # print('After %d generations, Best: %d,'%(count+1, minimum_cost), 'Worst: %d'%worst_cost, \
             #     'delta: %d'%delta, 'Avg: %.2f'%average, file=text_out)
