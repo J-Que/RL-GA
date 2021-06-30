@@ -12,7 +12,7 @@ def main():
 
     for i in range(int(sys.argv[3]), int(sys.argv[4])):
         for j in params:
-            os.system('python gpu.py ' + str(j[0]) + ' 2 ' + str(j[1]) + ' ' + str(i))
+            os.system('python gpu.py ' + str(j[0]) + ' 20000 ' + str(j[1]) + ' ' + str(i))
             print('*******************************************************')
             print('RUN:', str(count), 'of', str(total))
             count += 1
