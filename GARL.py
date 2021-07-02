@@ -6,7 +6,7 @@ import json
 import os
 
 class RLagent():
-    def __init__(self, alpha, gamma, epsilon, cRange, mRange, crossover, mutation, fitness, problem):
+    def __init__(self, alpha, gamma, epsilon, cRange, mRange, crossover, mutation, fitness, problem, run):
         ##################################################################################################################
         #------------------------------------------------ Hyperparameters ------------------------------------------------
         # the learning rate
@@ -70,7 +70,8 @@ class RLagent():
 
         # initialie the json file
         path = 'results/SARSA/agent/'
-        self.json = path + problem + '_agent_' + str(len(os.listdir(path))) + '.json'
+        self.json = path + problem + '_agent_' + run + '.json'
+        #self.json = path + problem + '_agent_' + str(len(os.listdir(path))) + '.json'
         with open(self.json, 'w') as f:
             json.dump({}, f)
 
