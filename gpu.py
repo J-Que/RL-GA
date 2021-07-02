@@ -873,7 +873,7 @@ try:
     problem = sys.argv[1]
     results = {}
     
-    agent = RLagent(alpha, gamma, epsilon, cRange, mRange, initCrossover, initMutation, fitness, problem)
+    agent = RLagent(alpha, gamma, epsilon, cRange, mRange, initCrossover, initMutation, fitness, problem, sys.argv[4])
     
     print('Reinforcement agent initialized')
     f = open('log.out', 'a')
